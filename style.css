@@ -1,0 +1,31 @@
+.main-body {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calc-body {
+    text-align: center;
+    display: block;
+    padding: 0;
+}
+
+.calc-functions {
+    flex-direction: column;
+    padding-left: 10px;
+}
+
+button {
+    margin: auto;
+}
+.input {
+    margin: 5px;
+    padding: 0;
+    border: 2px solid black;
+    text-align: right;
+
+}
+
+div {
+    border: 2px solid red;
+}
