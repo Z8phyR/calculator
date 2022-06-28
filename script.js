@@ -1,89 +1,110 @@
-//constants
-const btn1 = document.getElementById("1");
-const btn2 = document.getElementById("2");
-const btn3 = document.getElementById("3");
-const btn4 = document.getElementById("4");
-const btn5 = document.getElementById("5");
-const btn6 = document.getElementById("6");
-const btn7 = document.getElementById("7");
-const btn8 = document.getElementById("8");
-const btn9 = document.getElementById("9");
-const btn0 = document.getElementById("0");
-const displayInput = document.getElementById('input');
-const btnplus = document.getElementById('add');
-const btnsub = document.getElementById('subtract');
-const btndiv = document.getElementById('divide');
-const btnmult = document.getElementById('multiply');
-const btnequal = document.getElementById('equals');
-const btnclear = document.getElementById('clear');
+const calculator = document.querySelector('.calculator');
+const keys = calculator.querySelector('.calculator-keys');
+const display = document.querySelector('.calculator-display');
+keys.addEventListener('click',e => {
+    if (e.target.matches('button')) {
+      const key = e.target;
+      const action = key.dataset.action;
+      const keyContent = key.textContent;
+      const displayedNum = display.textContent;
+      const previousKeyType = calculator.dataset.previousKeyType;
 
-//Variables that update
-let operator;
-let total = 0;
-let first = 0;
-let second = 0;
-let display = total;
-
-
-//Number Button Event Listeners
-btn1.addEventListener("click",updateDisplay)
-btn2.addEventListener("click",updateDisplay)
-btn3.addEventListener("click",updateDisplay)
-btn4.addEventListener("click",updateDisplay)
-btn5.addEventListener("click",updateDisplay)
-btn6.addEventListener("click",updateDisplay)
-btn7.addEventListener("click",updateDisplay)
-btn8.addEventListener("click",updateDisplay)
-btn9.addEventListener("click",updateDisplay)
-btn0.addEventListener("click",updateDisplay)
-
-//Operation Button Event Listener
-btnplus.addEventListener("click",operator = "plus");
-btnsub.addEventListener("click",operator = "subtract");
-btnmult.addEventListener("click",operator = "multiply");
-btndiv.addEventListener("click",operator = "divide");
-
-btnequal.addEventListener("click", operate(first,second))
-btnclear.addEventListener("click",operator = "plus");
-
-//operation functions
-
-function add(...num) {
-    operator = "add";
-    return total = num[0] + num[1];
-}
-
-function subtract(...num) {
-    operator = "subtract"
-    return total = num[0] - num[1]
-}
-
-function multiply(...num) {
-    operator = "multiply"
-    return total = num[0] * num[1];
-}
-
-function divide (...num) {
-    if (num[0] === 0) {
-        return console.log("Cannot divide!")
+      Array.from(key.parentNode.children)
+          .forEach(key => key.classList.remove('is-depressed'));
+      if (action !== 'clear') {
+        const clearButton = calculator.querySelector('[data-action=clear]');
+        clearButton.textContent = 'CE';
+      }
+      if (!action) {
+        if (displayedNum === '0' || 
+            previousKeyType === 'operator' ||
+            previousKeyType === 'calculate'
+            ) {
+          display.textContent = keyContent;
+          calculator.dataset.previousKeyType = 'number'
+        } else {
+          display.textContent = displayedNum + keyContent;
+        }
+        console.log('Number Key!');
+      }
+      if (
+        action === 'add' ||
+        action === 'subtract' ||
+        action === 'multiply' ||
+        action === 'divide'
+      ) {
+          const firstValue = calculator.dataset.firstValue;
+          const operator = calculator.dataset.operator;
+          const secondValue = displayedNum; 
+        if (firstValue && 
+            operator &&
+            previousKeyType !== 'operator' &&
+            previousKeyType !== 'calculate'
+            )
+             {
+              const calcValue = calculate(firstValue, operator, secondValue);
+              display.textValue = calcValue;
+              calculator.dataset.firstValue = calcValue;
+             } else {
+          display.textContent = displayedNum;
+        }
+        key.classList.add('is-depressed');
+        calculator.dataset.previousKeyType = 'operator';
+        calculator.dataset.firstValue = displayedNum;
+        calculator.dataset.operator = action;
+        console.log('Operator Key!');
+      }
+      if (action === 'decimal') {
+        if (!displayedNum.includes('.')) {
+        display.textContent = displayedNum + '.';
+        console.log('Decimal Key!')
+        } else if (previousKeyType === 'operator' ||
+                    previousKeyType === 'calculate'
+                  ) {
+          display.textContent = '0';
+        }
+        calculator.dataset.previousKeyType = 'decimal';
+      }
+      if (action === 'clear') {
+        if (key.textContent === 'AC') {
+          calculator.dataset.firstValue = '';
+          calculator.dataset.modValue = '';
+          calculator.dataset.operator = '';
+          calculator.dataset.previousKeyType = '';
+        } else {
+        key.textContent = 'AC'
+        }
+                display.textContent = 0;
+        calculator.dataset.previousKeyType = 'clear';
+        console.log('Clear Key!');
+      }
+      if (action === 'calculate') {
+        let firstValue = calculator.dataset.firstValue;
+        const operator = calculator.dataset.operator;
+        let secondValue = displayedNum;
+        if (firstValue) {
+          if (previousKeyType === 'calculate') {
+              firstValue = displayedNum;
+              secondValue = calculator.dataset.modValue;
+          }
+        display.textContent = calculate(firstValue,operator,secondValue);
+        console.log('Equal Key!')
+        }
+        calculator.dataset.modValue = secondValue;
+        calculator.dataset.previousKeyType = 'calculate'
+      }
     }
-    operator = "divide"
-    return total = num[0] / num[1]
-}
-
-function operate(a,b) {
-  if (operator === "add") {
-    return add(a,b);
-  };
-  if (operator === "subtract") {
-    return subtract(a,b);
-  };
-  if (operator === "multiply") {
-    return multiply(a,b);
-  };
-  if (operator === "divide") {
-    return divide(a,b);
+})
+const calculate = (n1,operator,n2) => {
+  let result = '';
+  if (operator === 'add') {
+    result = parseFloat(n1) + parseFloat(n2);
+  } else if (operator === 'subtract') {
+    result = parseFloat(n1) - parseFloat(n2);
+  } else if ( operator === 'multiply') {
+    result = parseFloat(n1) * parseFloat(n2);
+  } else if (operator === 'divide') {
+    result = parseFloat(n1) / parseFloat(n2);
   }
-  return total;
+  return result;
 }
-

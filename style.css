@@ -1,31 +1,119 @@
-.main-body {
-    display:flex;
-    align-items: center;
-    justify-content: center;
+html {
+    box-sizing: border-box;
+    font-size: 175%;
+    font-weight: 300;
+    line-height: 1.4;
 }
 
-.calc-body {
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+body > h1 {
+    position: fixed;
     text-align: center;
-    display: block;
-    padding: 0;
+    top: 30px;
+    border: 2px solid rgb(54, 182, 199);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 0;
+}
+body {
+ margin: 0;
+ align-items: center;
+ background-image: linear-gradient(rgba(43, 92, 167, 0.2), rgb(20, 219, 209));
+ display: flex;
+ height: 100vh;
+ justify-content: center;
 }
 
-.calc-functions {
-    flex-direction: column;
-    padding-left: 10px;
+.container {
+    text-align: center;
+    max-width: 20em;
 }
 
-button {
-    margin: auto;
+.calculator {
+    border-radius: 12px;
+    box-shadow: 0 0 40px 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2em;
+    max-width: 15em;
+    overflow: hidden;
 }
-.input {
-    margin: 5px;
-    padding: 0;
-    border: 2px solid black;
+
+.calculator-keys {
+    background-color:azure;
+    display: grid;
+    grid-gap: 1px;
+    grid-template-columns: repeat(4, 1fr);
+}
+.calculator-keys > * {
+    background-color: burlywood;
+    padding: 0.5em 1.25em;
+    position: relative;
+    text-align: center;
+}
+
+.calculator-keys > *:active::before,
+.calculator-keys > .is-depressed::before {
+    background-color: rgba(0,0,0,0.2);
+    bottom: 0;
+    box-shadow: 0 0 6px 0 rgba(0,0,0,0.5) inset;
+    content: "";
+    left: 0;
+    opacity: 0.3;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+}
+button:hover {
+    background-color:rgb(188, 156, 143);
+    border-radius: 15px;
+    outline: 5px solid black;
+    opacity: 0.5;
+}
+
+.key-operator {
+    background-color:rgb(247, 217, 171);
+}
+
+.key-operator:active {
+    background-color: red;
+}
+.key-equal {
+    background-color: palevioletred;
+    grid-column: -2;
+    grid-row: 2 / span 4;
+}
+.calculator-display {
+    background-color:darkgrey;
+    font-size: 50px;
+    padding: 10px 10px;
     text-align: right;
+}
+input,
+textarea,
+button {
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    appearance: none;
+    text-align: left;
 
 }
 
-div {
-    border: 2px solid red;
+input:hover,
+input:active,
+input:focus,
+button:hover,
+button:active,
+button:focus {
+    outline: none;
+    transition: .3s;
 }
